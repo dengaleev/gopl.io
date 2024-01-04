@@ -20,6 +20,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -47,6 +48,12 @@ const (
 
 func CommaBuffer(s string) string {
 	var buf bytes.Buffer
+
+	if strings.HasPrefix(s, "-") || strings.HasPrefix(s, "+") {
+		buf.WriteString(s[:1])
+		s = s[1:]
+	}
+
 	i := len(s) % segmentLen
 	if i == 0 {
 		i = segmentLen
