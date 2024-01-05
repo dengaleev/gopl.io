@@ -16,8 +16,18 @@ import (
 	"unicode/utf8"
 )
 
+func printCountMap(name string, counts map[rune]int) {
+	fmt.Printf("%s counts:\n", name)
+	fmt.Printf("\trune\tcount\n")
+	for c, n := range counts {
+		fmt.Printf("\t%q\t%d\n", c, n)
+	}
+}
+
 func main() {
-	counts := make(map[rune]int)    // counts of Unicode characters
+	letters := make(map[rune]int)   // counts of Unicode letters
+	digits := make(map[rune]int)    // counts of Unicode digits
+	other := make(map[rune]int)     // counts of Unicode digits
 	var utflen [utf8.UTFMax + 1]int // count of lengths of UTF-8 encodings
 	invalid := 0                    // count of invalid UTF-8 characters
 
@@ -35,19 +45,20 @@ func main() {
 			invalid++
 			continue
 		}
-		counts[r]++
+
+		switch {
+		case unicode.IsDigit(r):
+			digits[r]++
+		case unicode.IsLetter(r):
+			letters[r]++
+		default:
+			other[r]++
+		}
 		utflen[n]++
 	}
-	fmt.Printf("rune\tcount\n")
-	for c, n := range counts {
-		fmt.Printf("%q\t%d\n", c, n)
-	}
-	fmt.Print("\nlen\tcount\n")
-	for i, n := range utflen {
-		if i > 0 {
-			fmt.Printf("%d\t%d\n", i, n)
-		}
-	}
+	printCountMap("Digits", digits)
+	printCountMap("Letters", letters)
+	printCountMap("Other", other)
 	if invalid > 0 {
 		fmt.Printf("\n%d invalid UTF-8 characters\n", invalid)
 	}
