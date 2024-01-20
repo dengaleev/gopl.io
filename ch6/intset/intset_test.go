@@ -3,7 +3,12 @@
 
 package intset
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func Example_one() {
 	//!+main
@@ -47,4 +52,32 @@ func Example_two() {
 	// {1 9 42 144}
 	// {1 9 42 144}
 	// {[4398046511618 0 65536]}
+}
+
+func TestLen(t *testing.T) {
+	var x IntSet
+	assert.Equal(t, 0, x.Len())
+	x.Add(4)
+	x.Add(8)
+	x.Add(15)
+	x.Add(16)
+	x.Add(23)
+	x.Add(42)
+	assert.Equal(t, 6, x.Len())
+
+	x.Add(4)
+	assert.Equal(t, 6, x.Len())
+	x.Add(42)
+	assert.Equal(t, 6, x.Len())
+
+	x.Remove(15)
+	assert.Equal(t, 5, x.Len())
+	x.Remove(16)
+	assert.Equal(t, 4, x.Len())
+
+	y := x.Copy()
+
+	x.Clear()
+	assert.Equal(t, 0, x.Len())
+	assert.Equal(t, 4, y.Len())
 }

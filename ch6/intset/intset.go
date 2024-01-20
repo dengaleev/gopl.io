@@ -71,3 +71,37 @@ func (s *IntSet) String() string {
 }
 
 //!-string
+
+// func (s *IntSet) Len() int {
+
+// }
+
+func (s *IntSet) Len() int {
+	cnt := 0
+	for _, w := range s.words {
+		for w > 0 {
+			cnt += int(w % 2)
+			w /= 2
+		}
+	}
+	return cnt
+}
+
+func (s *IntSet) Remove(x int) {
+	word, bit := x/64, uint(x%64)
+	if word < len(s.words) {
+		s.words[word] &= ^(1 << bit)
+	}
+}
+
+func (s *IntSet) Clear() {
+	s.words = s.words[:0]
+}
+
+func (s *IntSet) Copy() *IntSet {
+	c := &IntSet{
+		words: make([]uint64, len(s.words)),
+	}
+	copy(c.words, s.words)
+	return c
+}
