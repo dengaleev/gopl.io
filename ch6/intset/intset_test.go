@@ -81,3 +81,11 @@ func TestLen(t *testing.T) {
 	assert.Equal(t, 0, x.Len())
 	assert.Equal(t, 4, y.Len())
 }
+
+func TestAdd(t *testing.T) {
+	var x IntSet
+	x.AddAll(4, 8, 15)
+	assert.Equal(t, 3, x.Len())
+	x.AddAll(16, 23, 42)
+	assert.Equal(t, 6, x.Len())
+}
