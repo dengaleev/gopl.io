@@ -111,3 +111,18 @@ func (s *IntSet) AddAll(vals ...int) {
 		s.Add(val)
 	}
 }
+
+func (s *IntSet) Elems() []int {
+	res := make([]int, 0, s.Len())
+	for i, w := range s.words {
+		cnt := 0
+		for w > 0 {
+			if w%2 != 0 {
+				res = append(res, i*64+cnt)
+			}
+			w /= 2
+			cnt++
+		}
+	}
+	return res
+}

@@ -89,3 +89,9 @@ func TestAdd(t *testing.T) {
 	x.AddAll(16, 23, 42)
 	assert.Equal(t, 6, x.Len())
 }
+
+func TestElems(t *testing.T) {
+	var x IntSet
+	x.AddAll(4, 8, 15, 16, 23, 42)
+	assert.Equal(t, []int{4, 8, 15, 16, 23, 42}, x.Elems())
+}
